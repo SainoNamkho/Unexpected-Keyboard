@@ -54,6 +54,10 @@ jobs:
         DEBUG_KEYSTORE_PASSWORD: debug0
         DEBUG_KEY_ALIAS: debug
         DEBUG_KEY_PASSWORD: debug0
+        RELEASE_KEYSTORE: "debug.keystore"
+        RELEASE_KEYSTORE_PASSWORD: debug0
+        RELEASE_KEY_ALIAS: debug
+        RELEASE_KEY_PASSWORD: debug0
 
     - name: Artifact naming
       run: |
