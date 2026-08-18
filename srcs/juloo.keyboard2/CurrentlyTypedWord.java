@@ -6,7 +6,6 @@ import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.SurroundingText;
-import android.icu.text.BreakIterator;
 import java.util.List;
 
 /** Keep track of the word being typed. This also tracks whether the selection
@@ -36,9 +35,6 @@ public final class CurrentlyTypedWord
       word in chars. Equal to [0] when the cursor is at the end of the word. */
   int _w_cursor;
 
-  /** Helper to check if delete operation is across glyph boundary. */
-  private final BreakIterator _char_iter = BreakIterator.getCharacterInstance();
-    
   public CurrentlyTypedWord(Handler h, Callback cb)
   {
     _handler = h;
@@ -117,7 +113,7 @@ public final class CurrentlyTypedWord
       case KeyEvent.KEYCODE_DEL:
         if (meta == 0)
           // TODO: delete a selection or a grapheme cluster
-          remove_surrounding_text(1, -1);
+          remove_surrounding_text(1, 0);
         else
           delayed_refresh();
         break;
@@ -131,19 +127,15 @@ public final class CurrentlyTypedWord
   {
     if (!_enabled)
       return;
-    if (_has_selection)
-    {
-      delayed_refresh();
-      return;
-    }
-    
     int len = _w.length();
     int c = len + _w_cursor;
     assert c >= 0;
     // Removing beyond the boundary means there's a word delimiter,
     // or the initial surrounding text has run out.
-    if (remove_before > c || _w_cursor + remove_after > 0)
-    {
+    if (remove_before > c || _w_cursor + remove_after > 0
+        // Currently this function is only called when taking suggestions
+        // or hitting backspace.
+        || remove_before == 1 && !is_word_char(_w.codePointBefore(c)))
       delayed_refresh();
       return;
     }
@@ -152,18 +144,11 @@ public final class CurrentlyTypedWord
 
     if (remove_after == -1)
     {
-      remove_after = 0;
-      if (_char_iter.preceding(c) != c - 1)
-      {
-        delayed_refresh();
-        return;
-      }
+      _w.delete(c - remove_before, c + remove_after);
+      _cursor -= remove_before;
+      _w_cursor += remove_after;
+      callback();
     }
-    
-    _w.delete(c - remove_before, c + remove_after);
-    _cursor -= remove_before;
-    _w_cursor += remove_after;
-    callback();
   }
 
   void callback()

@@ -48,12 +48,16 @@ jobs:
         fi
 
     - name: Build debug APK
-      run: ./gradlew assembleDebug
+      run: ./gradlew assembleRelease
       env:
         DEBUG_KEYSTORE: "debug.keystore"
         DEBUG_KEYSTORE_PASSWORD: debug0
         DEBUG_KEY_ALIAS: debug
         DEBUG_KEY_PASSWORD: debug0
+        RELEASE_KEYSTORE: "debug.keystore"
+        RELEASE_KEYSTORE_PASSWORD: debug0
+        RELEASE_KEY_ALIAS: debug
+        RELEASE_KEY_PASSWORD: debug0
 
     - name: Artifact naming
       run: |
@@ -63,5 +67,5 @@ jobs:
     - name: Upload debug APK
       uses: actions/upload-artifact@v4
       with:
-        name: "${{env.artifact}} debug_apk"
-        path: build/outputs/apk/debug/*.apk
+        name: "${{env.artifact}} release_apk"
+        path: build/outputs/apk/release/*.apk
