@@ -145,7 +145,7 @@ public final class CurrentlyTypedWord
     if (remove_before > c || _w_cursor + remove_after > 0)
     {
       delayed_refresh();
-      return 0;
+      return;
     }
 
     _char_iter.setText(_w);
