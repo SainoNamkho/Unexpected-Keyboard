@@ -167,7 +167,7 @@ public final class CurrentlyTypedWord
       if (!is_word_char(c) && i <= end)
         insert_start = i;
     }
-    cursor += i - start;
+    _cursor += i - start;
     // We alreay guarantee this, no need for real check
     assert _w.length() + _w_cursor >= 0;
     if (insert_start > 0)
