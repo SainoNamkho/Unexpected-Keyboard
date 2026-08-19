@@ -226,7 +226,7 @@ public final class KeyValue implements Comparable<KeyValue>
   /** Defined only when [getKind() == Kind.Slider]. */
   public Slider getSlider()
   {
-    return (Slider)_payload;
+    return ((SliderWithSymbol)_payload).getSlider();
   }
 
   /** Defined only when [getKind() == Kind.Slider]. */
@@ -282,7 +282,7 @@ public final class KeyValue implements Comparable<KeyValue>
           flags |= FLAG_SMALLER_FONT;
         return new KeyValue(symbol, _code, _code, flags);
       case Slider:
-        return new KeyValue(new Slider(symbol, getSlider().vertical), _code, _code, flags);
+        return new KeyValue(new SliderWithSymbol(getSlider(), symbol), _code, _code, flags);
       case Macro:
         return makeMacro(symbol, getMacro(), flags);
       default:
@@ -417,7 +417,7 @@ public final class KeyValue implements Comparable<KeyValue>
   public static KeyValue sliderKey(Slider s, int repeatition)
   {
     // Casting to a short then back to a int to preserve the sign bit.
-    return new KeyValue(s, Kind.Slider, (short)repeatition & 0xFFFF,
+    return new KeyValue(new SliderWithSymbol(s), Kind.Slider, (short)repeatition & 0xFFFF,
         FLAG_SPECIAL | FLAG_SECONDARY | FLAG_KEY_FONT);
   }
 
@@ -878,6 +878,12 @@ public final class KeyValue implements Comparable<KeyValue>
 
     final String symbol;
     final boolean vertical;
+    
+    private static final Slider[] VALUES = Slider.values();
+    public static Slider fromOrdinal(int index)
+    {
+      return VALUES[index];
+    }
 
     Slider(int symbol_, boolean vertical)
     {
@@ -895,7 +901,47 @@ public final class KeyValue implements Comparable<KeyValue>
     @Override
     public String describe() { return name(); }
   };
+  
+  
+  public static final class SliderWithSymbol implements Describe
+  {
+    final String symbol;
+    final int index;
 
+    public SlierWithSymbol(String symbol, int index)
+    {
+      this.symbol = symbol;
+      this.index = index;
+    }
+
+    public SlierWithSymbol(Slider slider)
+    {
+      this.symbol = slider.symbol;
+      this.index = slider.ordinal();
+    }
+    
+    public SlierWithSymbol(Slider slider, string symbol)
+    {
+      this.symbol = symbol;
+      this.index = slider.ordinal();
+    }
+    
+    public Slider getSlider()
+    {
+        return Slider.fromOrdinal(index);
+    }
+    
+    public boolean isVertical() {
+      return getSlider().isVertical();
+    }
+
+    @Override
+    public String toString() { return symbol; }
+
+    @Override
+    public String describe() { return getSlider().name(); }
+  };
+  
   public static final class Macro implements Comparable<Macro>, Describe
   {
     public final KeyValue[] keys;
