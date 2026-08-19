@@ -282,7 +282,7 @@ public final class KeyValue implements Comparable<KeyValue>
           flags |= FLAG_SMALLER_FONT;
         return new KeyValue(symbol, _code, _code, flags);
       case Slider:
-        return new KeyValue(new Slider(symbol, getSlider().vertical), _code), _code, _code, flags);
+        return new KeyValue(new Slider(symbol, getSlider().vertical), _code, _code, flags);
       case Macro:
         return makeMacro(symbol, getMacro(), flags);
       default:
