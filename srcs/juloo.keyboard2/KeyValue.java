@@ -903,7 +903,7 @@ public final class KeyValue implements Comparable<KeyValue>
   };
   
   
-  public static final class SliderWithSymbol implements Describe
+  public static final class SliderWithSymbol implements Comparable<SliderWithSymbol>, Describe
   {
     final String symbol;
     final int index;
@@ -940,6 +940,18 @@ public final class KeyValue implements Comparable<KeyValue>
 
     @Override
     public String describe() { return getSlider().name(); }
+    
+    @Override
+    public int compareTo(SliderWithSymbol snd)
+    {
+      return index != snd.index ? Integer.compare(index, snd.index) : symbol.compareTo(snd.symbol);
+    }
+    
+    @Override
+    public int equals(Object obj)
+    {
+      return (obj != null) && index == snd.index && symbol.equals(snd.symbol);
+    }
   };
   
   public static final class Macro implements Comparable<Macro>, Describe
