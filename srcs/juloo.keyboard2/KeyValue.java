@@ -278,6 +278,7 @@ public final class KeyValue implements Comparable<KeyValue>
       case Modifier:
       case Editing:
       case Placeholder:
+      case Slider:
         if (symbol.length() > 1)
           flags |= FLAG_SMALLER_FONT;
         return new KeyValue(symbol, _code, _code, flags);
