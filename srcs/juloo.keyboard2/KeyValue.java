@@ -950,7 +950,7 @@ public final class KeyValue implements Comparable<KeyValue>
     @Override
     public boolean equals(Object obj)
     {
-      return (obj != null) && index == snd.index && symbol.equals(snd.symbol);
+      return (obj != null) && index == ((SliderWithSymbol)obj).index && symbol.equals(((SliderWithSymbol)obj).symbol);
     }
   };
   
