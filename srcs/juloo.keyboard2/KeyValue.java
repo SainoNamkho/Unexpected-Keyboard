@@ -908,19 +908,19 @@ public final class KeyValue implements Comparable<KeyValue>
     final String symbol;
     final int index;
 
-    public SlierWithSymbol(String symbol, int index)
+    public SliderWithSymbol(String symbol, int index)
     {
       this.symbol = symbol;
       this.index = index;
     }
 
-    public SlierWithSymbol(Slider slider)
+    public SliderWithSymbol(Slider slider)
     {
       this.symbol = slider.symbol;
       this.index = slider.ordinal();
     }
     
-    public SlierWithSymbol(Slider slider, string symbol)
+    public SliderWithSymbol(Slider slider, string symbol)
     {
       this.symbol = symbol;
       this.index = slider.ordinal();
