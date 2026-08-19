@@ -920,7 +920,7 @@ public final class KeyValue implements Comparable<KeyValue>
       this.index = slider.ordinal();
     }
     
-    public SliderWithSymbol(Slider slider, string symbol)
+    public SliderWithSymbol(Slider slider, String symbol)
     {
       this.symbol = symbol;
       this.index = slider.ordinal();
