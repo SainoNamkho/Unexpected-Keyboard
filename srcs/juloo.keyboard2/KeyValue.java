@@ -948,7 +948,7 @@ public final class KeyValue implements Comparable<KeyValue>
     }
     
     @Override
-    public int equals(Object obj)
+    public boolean equals(Object obj)
     {
       return (obj != null) && index == snd.index && symbol.equals(snd.symbol);
     }
